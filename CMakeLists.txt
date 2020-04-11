@@ -21,6 +21,7 @@ option(MBGL_WITH_QT "Build Mapbox GL Qt bindings" OFF)
 option(MBGL_WITH_SANITIZER "Use [address|thread|undefined] here" OFF)
 option(MBGL_WITH_RTTI "Compile with runtime type information" OFF)
 option(MBGL_WITH_OPENGL "Build with OpenGL renderer" ON)
+option(BUILD_SHARED_LIBS "Build static or shared libraries" ON)
 
 add_library(
     mbgl-compiler-options INTERFACE
@@ -47,6 +48,10 @@ target_compile_options(
         $<$<CXX_COMPILER_ID:GNU>:-Wno-error=maybe-uninitialized>
         $<$<CXX_COMPILER_ID:GNU>:-Wno-error=return-type>
         $<$<CXX_COMPILER_ID:GNU>:-Wno-error=unknown-pragmas>
+        $<$<CXX_COMPILER_ID:GNU>:-Wno-error=redundant-move>
+        $<$<CXX_COMPILER_ID:GNU>:-Wno-error=pessimizing-move>
+        $<$<CXX_COMPILER_ID:GNU>:-Wno-error=deprecated-declarations>
+        $<$<CXX_COMPILER_ID:GNU>:-Wno-error=uninitialized>
         $<$<CXX_COMPILER_ID:AppleClang>:-Wno-error=deprecated-declarations>
         $<$<CXX_COMPILER_ID:AppleClang>:-Wno-error=unused-parameter>
         $<$<CXX_COMPILER_ID:AppleClang>:-Wno-error=unused-property-ivar>
@@ -1015,3 +1020,9 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/render-test)
 if(EXISTS ${PROJECT_SOURCE_DIR}/internal/internal.cmake)
     include(${PROJECT_SOURCE_DIR}/internal/internal.cmake)
 endif()
+
+# installs
+include(GNUInstallDirs)
+install(DIRECTORY include/mbgl
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+        COMPONENT development)

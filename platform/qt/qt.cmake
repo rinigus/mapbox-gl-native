@@ -5,6 +5,8 @@ find_package(Qt5Network REQUIRED)
 find_package(Qt5OpenGL REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
+include(GNUInstallDirs)
+
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     add_definitions("-DQT_COMPILING_QIMAGE_COMPAT_CPP")
     add_definitions("-D_USE_MATH_DEFINES")
@@ -96,7 +98,7 @@ target_link_libraries(
 )
 
 add_library(
-    qmapboxgl SHARED
+    qmapboxgl
     ${PROJECT_SOURCE_DIR}/platform/qt/include/qmapbox.hpp
     ${PROJECT_SOURCE_DIR}/platform/qt/include/qmapboxgl.hpp
     ${PROJECT_SOURCE_DIR}/platform/qt/src/qmapbox.cpp
@@ -114,6 +116,8 @@ add_library(
     ${PROJECT_SOURCE_DIR}/platform/qt/src/qt_geojson.cpp
     ${PROJECT_SOURCE_DIR}/platform/qt/src/qt_geojson.hpp
 )
+
+set_property(TARGET qmapboxgl PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 # FIXME: Because of rapidjson conversion
 target_include_directories(
@@ -140,6 +144,19 @@ target_link_libraries(
         mbgl-core
 )
 
+# install library
+install(TARGETS qmapboxgl
+  LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT shared NAMELINK_SKIP
+  ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT development)
+
+install(FILES
+        platform/qt/include/QMapbox
+        platform/qt/include/QMapboxGL
+        platform/qt/include/qmapbox.hpp
+        platform/qt/include/qmapboxgl.hpp
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/qt5"
+        COMPONENT development)
+
 add_executable(
     mbgl-qt
     ${PROJECT_SOURCE_DIR}/platform/qt/app/main.cpp
@@ -151,6 +168,10 @@ add_executable(
 # Qt public API should keep compatibility with old compilers for legacy systems
 set_property(TARGET mbgl-qt PROPERTY CXX_STANDARD 98)
 
+if(UNIX)
+  list(APPEND EXTRA_LIBS_MBGL_QT pthread)
+endif()
+
 target_link_libraries(
     mbgl-qt
     PRIVATE
@@ -158,6 +179,7 @@ target_link_libraries(
         Qt5::Gui
         mbgl-compiler-options
         qmapboxgl
+        ${EXTRA_LIBS_MBGL_QT}
 )
 
 add_executable(
