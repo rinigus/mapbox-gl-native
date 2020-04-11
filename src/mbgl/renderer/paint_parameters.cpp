@@ -76,8 +76,9 @@ gfx::DepthMode PaintParameters::depthModeForSublayer(uint8_t n, gfx::DepthMaskTy
     if (currentLayer < opaquePassCutoff) {
         return gfx::DepthMode::disabled();
     }
-    float depth = depthRangeSize + ((1 + currentLayer) * numSublayers + n) * depthEpsilon;
-    return gfx::DepthMode { gfx::DepthFunctionType::LessEqual, mask, { depth, depth } };
+    float nearDepth = ((1 + currentLayer) * numSublayers + n) * depthEpsilon;
+    float farDepth = nearDepth + depthRangeSize;
+    return gfx::DepthMode { gfx::DepthFunctionType::LessEqual, mask, { nearDepth, farDepth } };
 }
 
 gfx::DepthMode PaintParameters::depthModeFor3D() const {
