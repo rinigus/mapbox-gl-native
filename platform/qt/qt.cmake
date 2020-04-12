@@ -120,7 +120,7 @@ if (MBGL_WITH_QT_HEADLESS)
 endif()
 
 add_library(
-    qmapboxgl
+    qmapboxgl SHARED
     ${PROJECT_SOURCE_DIR}/platform/qt/include/qmapbox.hpp
     ${PROJECT_SOURCE_DIR}/platform/qt/include/qmapboxgl.hpp
     ${PROJECT_SOURCE_DIR}/platform/qt/src/qmapbox.cpp
@@ -138,8 +138,6 @@ add_library(
     ${PROJECT_SOURCE_DIR}/platform/qt/src/qt_geojson.cpp
     ${PROJECT_SOURCE_DIR}/platform/qt/src/qt_geojson.hpp
 )
-
-set_property(TARGET qmapboxgl PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 # FIXME: Because of rapidjson conversion
 target_include_directories(

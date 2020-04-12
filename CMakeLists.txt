@@ -21,7 +21,7 @@ option(MBGL_WITH_QT "Build Mapbox GL Qt bindings" OFF)
 option(MBGL_WITH_SANITIZER "Use [address|thread|undefined] here" OFF)
 option(MBGL_WITH_RTTI "Compile with runtime type information" OFF)
 option(MBGL_WITH_OPENGL "Build with OpenGL renderer" ON)
-option(BUILD_SHARED_LIBS "Build static or shared libraries" ON)
+option(BUILD_WARNING_AS_ERROR "Make all warnings into errors" ON)
 
 add_library(
     mbgl-compiler-options INTERFACE
@@ -43,16 +43,23 @@ target_compile_options(
         $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<NOT:$<PLATFORM_ID:Windows>>>:-Wall>
         $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<NOT:$<PLATFORM_ID:Windows>>>:-Wshadow>
         $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<NOT:$<PLATFORM_ID:Windows>>>:-Wextra>
+)
+
+if (BUILD_WARNING_AS_ERROR)
+  target_compile_options(
+    mbgl-compiler-options
+    INTERFACE
+        $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<NOT:$<PLATFORM_ID:Windows>>>:-Werror>
         $<$<AND:$<COMPILE_LANGUAGE:CXX>,$<PLATFORM_ID:Android>>:-Wno-error=tautological-constant-compare>
         $<$<CXX_COMPILER_ID:GNU>:-Wno-error=maybe-uninitialized>
         $<$<CXX_COMPILER_ID:GNU>:-Wno-error=return-type>
         $<$<CXX_COMPILER_ID:GNU>:-Wno-error=unknown-pragmas>
-        $<$<CXX_COMPILER_ID:GNU>:-Wno-error=deprecated-declarations>
-        $<$<CXX_COMPILER_ID:GNU>:-Wno-error=uninitialized>
         $<$<CXX_COMPILER_ID:AppleClang>:-Wno-error=deprecated-declarations>
         $<$<CXX_COMPILER_ID:AppleClang>:-Wno-error=unused-parameter>
         $<$<CXX_COMPILER_ID:AppleClang>:-Wno-error=unused-property-ivar>
-)
+  )
+endif()
+
 
 target_link_libraries(
     mbgl-compiler-options
