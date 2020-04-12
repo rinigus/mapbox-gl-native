@@ -9,9 +9,6 @@ find_package(Qt5Network REQUIRED)
 
 if (MBGL_WITH_QT_DEMO OR MBGL_WITH_QT_TEST OR MBGL_WITH_QT_HEADLESS)
    find_package(Qt5OpenGL REQUIRED)
-endif()
-
-if (MBGL_WITH_QT_DEMO)
    find_package(Qt5Widgets REQUIRED)
 endif()
 
@@ -78,7 +75,7 @@ target_sources(
         ${PROJECT_SOURCE_DIR}/platform/qt/src/utf.cpp
 )
 
-if (MBGL_WITH_QT_HEADLESS)
+if (MBGL_WITH_QT_HEADLESS OR MBGL_WITH_QT_TEST)
    target_sources(
         mbgl-core
         PRIVATE
