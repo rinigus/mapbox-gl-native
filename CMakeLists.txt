@@ -1041,3 +1041,9 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/render-test)
 if(EXISTS ${PROJECT_SOURCE_DIR}/internal/internal.cmake)
     include(${PROJECT_SOURCE_DIR}/internal/internal.cmake)
 endif()
+
+# installs
+include(GNUInstallDirs)
+install(DIRECTORY include/mbgl
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+        COMPONENT development)
