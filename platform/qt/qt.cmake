@@ -40,6 +40,7 @@ target_sources(
         ${PROJECT_SOURCE_DIR}/platform/default/src/mbgl/gl/headless_backend.cpp
         ${PROJECT_SOURCE_DIR}/platform/default/src/mbgl/i18n/collator.cpp
         ${PROJECT_SOURCE_DIR}/platform/default/src/mbgl/layermanager/layer_manager.cpp
+        ${PROJECT_SOURCE_DIR}/platform/default/src/mbgl/platform/time.cpp
         ${PROJECT_SOURCE_DIR}/platform/default/src/mbgl/storage/asset_file_source.cpp
         ${PROJECT_SOURCE_DIR}/platform/default/src/mbgl/storage/database_file_source.cpp
         ${PROJECT_SOURCE_DIR}/platform/default/src/mbgl/storage/file_source_manager.cpp
@@ -58,10 +59,10 @@ target_sources(
         ${PROJECT_SOURCE_DIR}/platform/qt/src/async_task_impl.hpp
         ${PROJECT_SOURCE_DIR}/platform/qt/src/number_format.cpp
         ${PROJECT_SOURCE_DIR}/platform/qt/src/gl_functions.cpp
-        ${PROJECT_SOURCE_DIR}/platform/qt/src/http_file_source.cpp
-        ${PROJECT_SOURCE_DIR}/platform/qt/src/http_file_source.hpp
-        ${PROJECT_SOURCE_DIR}/platform/qt/src/http_request.cpp
-        ${PROJECT_SOURCE_DIR}/platform/qt/src/http_request.hpp
+        $<$<BOOL:${MBGL_PUBLIC_BUILD}>:${PROJECT_SOURCE_DIR}/platform/qt/src/http_file_source.cpp>
+        $<$<BOOL:${MBGL_PUBLIC_BUILD}>:${PROJECT_SOURCE_DIR}/platform/qt/src/http_file_source.hpp>
+        $<$<BOOL:${MBGL_PUBLIC_BUILD}>:${PROJECT_SOURCE_DIR}/platform/qt/src/http_request.cpp>
+        $<$<BOOL:${MBGL_PUBLIC_BUILD}>:${PROJECT_SOURCE_DIR}/platform/qt/src/http_request.hpp>
         ${PROJECT_SOURCE_DIR}/platform/qt/src/local_glyph_rasterizer.cpp
         ${PROJECT_SOURCE_DIR}/platform/qt/src/qt_image.cpp
         ${PROJECT_SOURCE_DIR}/platform/qt/src/qt_logging.cpp

@@ -441,7 +441,7 @@ public:
             mapbox::geometry::point<double>{oldParams.puckPosition.latitude(), oldParams.puckPosition.longitude()};
         mapbox::geometry::linear_ring<int64_t> border;
         for (const auto& v : puckGeometry) {
-            vec4 p{v.x, v.y, 0, 1};
+            vec4 p{{v.x, v.y, 0, 1}};
             matrix::transformMat4(p, p, translation);
             border.push_back(Point<int64_t>{int64_t(p[0]), int64_t(p[1])});
         }
@@ -614,11 +614,11 @@ protected:
         MBGL_CHECK_ERROR(glEnableVertexAttribArray(simpleShader.a_pos));
         MBGL_CHECK_ERROR(glVertexAttribPointer(simpleShader.a_pos, 2, GL_FLOAT, GL_FALSE, 0, nullptr));
 
-        MBGL_CHECK_ERROR(glDrawArrays(GL_TRIANGLE_FAN, 0, circle.size()));
+        MBGL_CHECK_ERROR(glDrawArrays(GL_TRIANGLE_FAN, 0, GLsizei(circle.size())));
         if (params.errorRadiusBorderColor.a > 0.0f) {
             mbgl::gl::bindUniform(simpleShader.u_color, params.errorRadiusBorderColor);
             MBGL_CHECK_ERROR(glLineWidth(1.0f));
-            MBGL_CHECK_ERROR(glDrawArrays(GL_LINE_STRIP, 1, circle.size() - 1));
+            MBGL_CHECK_ERROR(glDrawArrays(GL_LINE_STRIP, 1, GLsizei(circle.size() - 1)));
         }
         MBGL_CHECK_ERROR(glDisableVertexAttribArray(simpleShader.a_pos));
         circleBuffer.detach();
