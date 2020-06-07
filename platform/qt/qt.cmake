@@ -57,10 +57,6 @@ target_sources(
         ${PROJECT_SOURCE_DIR}/platform/qt/src/async_task_impl.hpp
         ${PROJECT_SOURCE_DIR}/platform/qt/src/number_format.cpp
         ${PROJECT_SOURCE_DIR}/platform/qt/src/gl_functions.cpp
-        $<$<BOOL:${MBGL_PUBLIC_BUILD}>:${PROJECT_SOURCE_DIR}/platform/qt/src/http_file_source.cpp>
-        $<$<BOOL:${MBGL_PUBLIC_BUILD}>:${PROJECT_SOURCE_DIR}/platform/qt/src/http_file_source.hpp>
-        $<$<BOOL:${MBGL_PUBLIC_BUILD}>:${PROJECT_SOURCE_DIR}/platform/qt/src/http_request.cpp>
-        $<$<BOOL:${MBGL_PUBLIC_BUILD}>:${PROJECT_SOURCE_DIR}/platform/qt/src/http_request.hpp>
         ${PROJECT_SOURCE_DIR}/platform/qt/src/local_glyph_rasterizer.cpp
         ${PROJECT_SOURCE_DIR}/platform/qt/src/qt_image.cpp
         ${PROJECT_SOURCE_DIR}/platform/qt/src/qt_logging.cpp
@@ -72,6 +68,7 @@ target_sources(
         ${PROJECT_SOURCE_DIR}/platform/qt/src/timer.cpp
         ${PROJECT_SOURCE_DIR}/platform/qt/src/timer_impl.hpp
         ${PROJECT_SOURCE_DIR}/platform/qt/src/utf.cpp
+        $<$<BOOL:${MBGL_PUBLIC_BUILD}>:${PROJECT_SOURCE_DIR}/platform/default/src/mbgl/storage/http_file_source.cpp>
 )
 
 if(MBGL_WITH_QT_HEADLESS OR NOT MBGL_WITH_QT_LIB_ONLY)
